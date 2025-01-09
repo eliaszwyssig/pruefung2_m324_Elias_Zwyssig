@@ -26,3 +26,27 @@ jobs:
         uses: github/super-linter@v4
         env:
           RUN_LOCAL: true  # Wenn die Action lokal läuft
+          name: AI Code Review
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ai-review:
+    runs-on: ubuntu-latest<<<<
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: AI Code Review
+        uses: github/ai-code-review-action@v1.0.0
+        with:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          open_ai_model: 'gpt-3.5-turbo'
+          with-comment: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
