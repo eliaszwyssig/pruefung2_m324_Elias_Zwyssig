@@ -1,13 +1,6 @@
-name: CI
-
-on:
-  pull_request:
-    branches:
-      - main
-
 jobs:
   lint-format-test:
-    runs-on: ubuntu-lastest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v14
@@ -18,7 +11,7 @@ jobs:
           node-version: '18.x'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run linter
         run: npm run lint
@@ -28,3 +21,32 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+      - name: Run Super Linter
+        uses: github/super-linter@v4
+        env:
+          RUN_LOCAL: true  # Wenn die Action lokal läuft
+          name: AI Code Review
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ai-review:
+    runs-on: ubuntu-latest<<<<
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: AI Code Review
+        uses: github/ai-code-review-action@v1.0.0
+        with:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          open_ai_model: 'gpt-3.5-turbo'
+          with-comment: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
