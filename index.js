@@ -4,7 +4,8 @@ export const sum = (a, b) => {
   return a + b;
 };
 
-const word = generate();
+const word     = generate();
+console.log(word)
 console.log(
   `Hello!!! 
   The ${chalk.redBright('random word')} of today is: ${chalk.bgRed(word)}. 
